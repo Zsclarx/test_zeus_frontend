@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="file"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Run Tool with Custom Files</h1>
+        <form id="toolForm" method="POST" enctype="multipart/form-data">
+            <label for="inputFile">Choose Input File (Feature File):</label>
+            <input type="file" id="inputFile" name="inputFile" required><br><br>
+
+            <label for="testDataFile">Choose Test Data Folder (ZIP FILE):</label>
+            <input type="file" id="testDataFile" name="testDataFile"><br><br>
+
+            <label for="apiKey">Enter API Key:</label>
+            <input type="text" id="apiKey" name="apiKey" required><br><br>
+
+            <label for="llmModel">Select Model:</label>
+            <select id="llmModel" name="llmModel" required>
+                <option value="gpt-4o">GPT-4</option>
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                <option value="gpt-3.5">GPT-3.5</option>
+                <option value="gpt-4-0314">GPT-4 0314</option>
+                <option value="gpt-4-0613">GPT-4 0613</option>
+                <option value="gpt-4o-mini">GPT-4 0613</option>
+            </select><br><br>
+
+            <button type="submit">Run Tool</button>
+        </form>
+
+        <pre id="output"></pre>
+    </div>
+
+    <script>
+        document.getElementById('toolForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('inputFile', document.getElementById('inputFile').files[0]);
+            formData.append('apiKey', document.getElementById('apiKey').value);
+            formData.append('llmModel', document.getElementById('llmModel').value);
+
+            // Append test data file if provided
+            const testDataFile = document.getElementById('testDataFile').files[0];
+            if (testDataFile) {
+                formData.append('testDataFile', testDataFile);
+            }
+
+            const response = await fetch('/run_tool', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = data.output || data.error;
+        });
+    </script>
+</body>
+</html>
