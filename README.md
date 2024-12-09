@@ -2,6 +2,10 @@
 
 This repository contains the frontend for the **TestZeus** tool, which helps you run tests with OpenAI models. Follow the instructions below to set up and use the application.
 
+## Pre-Setup Instructions
+
+Before proceeding with the setup, follow the instructions provided in the [Hercules-Setup-Guide](https://www.youtube.com/watch?v=9D-SZGoDrfc). (upto 2 minutes and 27 seconds) to ensure the environment is set up properly. This will guide you through necessary configurations and prerequisites.
+
 ## Environment Setup
 
 1. Clone the frontend repository:
